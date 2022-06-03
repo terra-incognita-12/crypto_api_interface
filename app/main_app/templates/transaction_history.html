@@ -18,17 +18,21 @@
                 <th scope="col">Sell</th>
                 <th scope="col">Sell Amount</th>
                 <th scope="col">Date</th>
+                <th scope="col">Delete</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th scope="row">0</th>
-                <td>BTC</td>
-                <td>1</td>
-                <td>DOGE</td>
-                <td>28712.65</td>
-                <td>6.1.22 17:56</td>
-            </tr>
+            {% for elem in history %}
+                <tr>
+                    <th scope="row">{{ elem.id }}</th>
+                    <td>{{ elem.buy_currency }}</td>
+                    <td>{{ elem.buy_currency_amount }}</td>
+                    <td>{{ elem.sell_currency }}</td>
+                    <td>{{ elem.sell_currency_amount }}</td>
+                    <td>{{ elem.date }}</td>
+                    <td><a href="{% url 'delete_transaction_history' elem.id %}" class="btn btn-danger btn-sm confirm-delete">Delete</a></td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 {% endblock %}
