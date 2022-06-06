@@ -1,15 +1,27 @@
+from multiprocessing import context
+import requests
 from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 
 from .models import TransactionHistory
 from .forms import RegularTradeForm
+from .filters import TransactionHistoryFilter
 
 def index(request):
     return render(request, 'index.html', {})
 
 def transaction_history(request):
-    transaction_history_data = TransactionHistory.objects.all().order_by('-id') 
-    return render(request, 'transaction_history.html', {'history': transaction_history_data})
+    transaction_history_data = TransactionHistory.objects.all()
+
+    historyFilter = TransactionHistoryFilter(request.GET, queryset=transaction_history_data)
+    transaction_history_data = historyFilter.qs
+
+    context = {
+        'history': transaction_history_data,
+        'historyFilter': historyFilter,
+    }
+
+    return render(request, 'transaction_history.html', context)
 
 def trade_regular_trade(request):
     form = RegularTradeForm()
@@ -42,7 +54,6 @@ def trade_calculator(request):
 
 def settings(request):
     return render(request, 'settings.html', {})
-
 
 def delete_transaction_history(request, pk):
     transation = get_object_or_404(TransactionHistory, pk=pk)

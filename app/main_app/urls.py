@@ -10,5 +10,5 @@ urlpatterns = [
 
     path('regular_trade/', trade_regular_trade, name='trade_regular_trade'),
     path('calculator/', trade_calculator, name='trade_calculator'),
-    path('settings/', settings, name='settings')
+    path('settings/', settings, name='settings'),
 ]
