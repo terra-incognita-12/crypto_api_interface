@@ -10,7 +10,7 @@ function getCurrencies() {
         .then(response => response.json())
         .then(response => {
             for (let i = 0; i < response.length; i++) {
-                currency_id_arr[i] = response[i]['id']
+                currency_id_arr[i] = response[i]['id'];
             }
         })
         .catch(err => console.error(err));
@@ -18,19 +18,33 @@ function getCurrencies() {
     return currency_id_arr;
 }
 
-// function convertCurrency(buy_currency, sell_currency, buy_amount) {
-//     const data = { from: buy_currency, to: sell_currency, amount: buy_amount };
-//     const options = {
-//         method: 'POST',
-//         headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
-//         body: JSON.stringify(data),
-//     };
-      
-//     fetch('https://api.exchange.coinbase.com/conversions', options)
-//         .then(response => response.json())
-//         .then(response => console.log(response))
-//         .catch(err => console.error(err));
-// }
+function getCurrencyBuyRate(buy_currency, sell_currency, buy_amount) {
+    const options = {method: 'GET', headers: {Accept: 'application/json'}};
+    fetch('https://api.coinbase.com/v2/prices/BTC-USD/buy', options)
+        .then(response => response.json())
+        .then(response => {
+            var currency_rate = response['data']['amount'];
+            // console.log(currency_rate);
+            console.log(currency_rate);
+            return currency_rate;
+        })
+        .catch(err => console.error(err));
+        
+    return;
+}
+
+
+$(function(){
+    $('#tradeform_check_balance').click(function() {
+        // currency_rate = getCurrencyBuyRate('BTC', 'USDT', 1);
+        currency_rate = async () => {
+            return 10;
+        }
+        // currency_rate = 10;
+        alert(currency_rate);
+        alert(1231);
+    });
+});
 
 // $(function(){
 //     $('body').on('input', '#tradeform_sell_currency', function(){
