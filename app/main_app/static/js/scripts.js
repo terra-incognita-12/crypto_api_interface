@@ -2,6 +2,7 @@ $(document).on('click', '.confirm-delete', function(){
     return confirm('Are you sure you want delete this?');
 });
 
+// Get all single currencies
 function getCurrencies() {
     const options = {method: 'GET', headers: {Accept: 'application/json'}};
     const currency_id_arr = [];
@@ -18,42 +19,40 @@ function getCurrencies() {
     return currency_id_arr;
 }
 
-function getCurrencyBuyRate(buy_currency, sell_currency, buy_amount) {
-    const options = {method: 'GET', headers: {Accept: 'application/json'}};
-    fetch('https://api.coinbase.com/v2/prices/BTC-USD/buy', options)
-        .then(response => response.json())
-        .then(response => {
-            var currency_rate = response['data']['amount'];
-            // console.log(currency_rate);
-            console.log(currency_rate);
-            return currency_rate;
-        })
-        .catch(err => console.error(err));
-        
-    return;
-}
-
-
+// Calculating min amount for sell 
 $(function(){
-    $('#tradeform_check_balance').click(function() {
-        // currency_rate = getCurrencyBuyRate('BTC', 'USDT', 1);
-        currency_rate = async () => {
-            return 10;
+    var typingTimer;
+    $('.tradeform-predetermined').keyup(function(){
+        if($('#tradeform_buy_currency').val() && $('#tradeform_buy_amount').val() && $('#tradeform_sell_currency').val()) {
+            const buy_currency = $('#tradeform_buy_currency').val();
+            const sell_currency = $('#tradeform_sell_currency').val();
+            const buy_amount = $('#tradeform_buy_amount').val();
+
+            const requestPrices = async () => {
+                const options = {method: 'GET', headers: {Accept: 'application/json'}};
+                try {
+                    const response = await fetch(`https://api.coinbase.com/v2/exchange-rates?currency=${buy_currency}`, options);
+                    const json = await response.json();
+                    const rate = json['data']['rates'][`${sell_currency}`];
+                    console.log(rate);
+                    const total_value = parseFloat(rate) * parseFloat(buy_amount);
+                    $('#tradeform_sell_amount').attr('value', total_value);  
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(requestPrices, 500);
         }
-        // currency_rate = 10;
-        alert(currency_rate);
-        alert(1231);
+    });
+
+    $('.tradeform-predetermined').keydown(function(){
+        clearTimeout(typingTimer);
     });
 });
 
-// $(function(){
-//     $('body').on('input', '#tradeform_sell_currency', function(){
-//         if($('#tradeform_buy_currency').val() && $('#tradeform_buy_amount').val() && $('#tradeform_sell_currency').val()) {
-//             convertCurrency($('#tradeform_buy_currency').val(), $('#tradeform_sell_currency').val(), $('#tradeform_buy_amount').val());
-//         }
-//     });
-// });
-
+// Autocomplete single currencies
 $(function(){
     const currency_arr = getCurrencies();
     $('.currency-autocomplete').autocomplete({

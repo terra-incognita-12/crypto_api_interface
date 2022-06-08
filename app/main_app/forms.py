@@ -6,7 +6,7 @@ class RegularTradeForm(forms.Form):
         max_length=50,
         label='Buy currency',
         widget=forms.TextInput(attrs={
-            'class': 'form-control currency-autocomplete',
+            'class': 'form-control currency-autocomplete tradeform-predetermined',
             'id': 'tradeform_buy_currency',
         })
     )
@@ -14,7 +14,7 @@ class RegularTradeForm(forms.Form):
     buy_currency_amount = forms.FloatField(
         label='Buy currency amount',
         widget=forms.NumberInput(attrs={
-            'class': 'form-control',
+            'class': 'form-control tradeform-predetermined',
             'id': 'tradeform_buy_amount',
         })
     )
@@ -23,7 +23,7 @@ class RegularTradeForm(forms.Form):
         max_length=50,
         label='Sell currency',
         widget=forms.TextInput(attrs={
-            'class': 'form-control currency-autocomplete',
+            'class': 'form-control currency-autocomplete tradeform-predetermined',
             'id': 'tradeform_sell_currency',
         })
     )
