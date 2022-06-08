@@ -19,6 +19,22 @@ function getCurrencies() {
     return currency_id_arr;
 }
 
+// Navbar Currecny Price form 
+$('#navbar-currency-price').click(function(){
+    const options = {method: 'GET', headers: {Accept: 'application/json'}};
+    const currency = $('#navbar-currency-price-input').val();
+
+    fetch(`https://api.coinbase.com/v2/prices/${currency}-USD/buy`, options)
+        .then(response => response.json())
+        .then(response => {
+            data = response['data']['amount'];
+            alert(`$ ${data}`);
+        })
+        .catch(err => {
+            alert('Wrong currency');
+        });
+});
+
 // Calculating min amount for sell 
 $(function(){
     var typingTimer;
