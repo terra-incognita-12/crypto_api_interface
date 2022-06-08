@@ -33,5 +33,12 @@ class RegularTradeForm(forms.Form):
         widget=forms.NumberInput(attrs={
             'class': 'form-control',
             'id': 'tradeform_sell_amount',
+            'placeholder': 'Fill the other forms to calculate possible sell amount'
         })
+    )
+
+class TickerForm(forms.Form):
+    currency = forms.CharField(
+        max_length=50,
+        widget=forms.TextInput(attrs={'class': 'form-control currency-autocomplete'})
     )

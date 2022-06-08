@@ -4,6 +4,34 @@
 
 {% block page_content %}
     <br>
-    <h2>Settings</h2>
+    <h2>Ticker</h2>
     <br>
+    {% if ticker_currency_arr %}
+        <div class="mb-3">
+            <h4>Current currencies:</h4>
+            <div class="row">
+                {% for elem in ticker_currency_arr %}
+                    <div class="col-1">
+                        {{ elem.currency }}
+                        <a class="btn btn-danger btn-sm confirm-delete" href="{% url 'delete_ticker_data' elem.id %}">X</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    <div class="mb-3">
+        <h4>Add new currency</h4>
+        <form action="{% url 'update_ticker_data' %}" method="POST">
+            {% csrf_token %}
+            <div class="row mb-3">
+                <div class="col-3">
+                    <div class="input-group">
+                        {{ ticker_form.currency }}
+                        <input type="submit" class="btn btn-success" value="Add">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <hr>
 {% endblock %}

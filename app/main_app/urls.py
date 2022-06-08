@@ -9,6 +9,8 @@ urlpatterns = [
     path('transaction_history/delete/<str:pk>', delete_transaction_history, name='delete_transaction_history'),
 
     path('regular_trade/', trade_regular_trade, name='trade_regular_trade'),
-    path('calculator/', trade_calculator, name='trade_calculator'),
+    
     path('settings/', settings, name='settings'),
+    path('settings/update_ticker_data/', update_ticker_data, name='update_ticker_data'),
+    path('settings/delete_ticker_data/<str:pk>', delete_ticker_data, name='delete_ticker_data'),
 ]

@@ -1,11 +1,12 @@
-from multiprocessing import context
 import requests
 from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 
-from .models import TransactionHistory
-from .forms import RegularTradeForm
+from .models import TransactionHistory, TickerData
+from .forms import RegularTradeForm, TickerForm
 from .filters import TransactionHistoryFilter
+
+############ PAGES URL ############
 
 def index(request):
     return render(request, 'index.html', {})
@@ -49,11 +50,36 @@ def trade_regular_trade(request):
         return redirect('trade_regular_trade')
     return render(request, 'trade_regular_trade.html', {'form': form})
 
-def trade_calculator(request):
-    return render(request, 'trade_calculator.html', {})
-
 def settings(request):
-    return render(request, 'settings.html', {})
+    ticker_form = TickerForm()
+    ticker_currency_arr = TickerData.objects.all()
+
+    context = {
+        'ticker_form': ticker_form,
+        'ticker_currency_arr': ticker_currency_arr
+    }
+
+    return render(request, 'settings.html', context)
+
+############ BACKEND URL ############
+
+# backend-validation
+def update_ticker_data(request):
+    currency = request.POST['currency']
+
+    if TickerData.objects.filter(currency=currency).exists():
+        messages.success(request, ('Current currency already in list'))
+    else:
+        ticker_currency = TickerData(currency=currency)
+        ticker_currency.save()
+    
+    return redirect('settings')
+
+def delete_ticker_data(request, pk):
+    ticker_currency = get_object_or_404(TickerData, pk=pk)
+    ticker_currency.delete()
+
+    return redirect('settings')
 
 def delete_transaction_history(request, pk):
     transation = get_object_or_404(TransactionHistory, pk=pk)
