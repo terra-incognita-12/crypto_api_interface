@@ -6,26 +6,30 @@
     <br>
     <h2>Regular trade</h2>
     <br>
-    <form class="custom-form" action="" method="post">
+    <form method="post">
         {% csrf_token %}
-        <div class="mb-3">
-            <label class="form-label">{{ form.buy_currency.label_tag }}</label>
-            {{ form.buy_currency }}
+        <div class="row">
+            <div class="col-4">
+                <div class="mb-3">
+                    {{ form.buy_currency.label_tag }}
+                    {{ form.buy_currency }}
+                </div>
+                <div class="mb-3">
+                    {{ form.buy_currency_amount.label_tag }}
+                    {{ form.buy_currency_amount }}
+        
+                </div>
+                <div class="mb-3">
+                    {{ form.sell_currency.label_tag }}
+                    {{ form.sell_currency }}
+                    <button id="tradeform_check_balance" class="btn btn-primary btn-sm check-balance">Check balance</button>
+                </div>
+                <div class="mb-3">
+                    {{ form.sell_currency_amount.label_tag }}
+                    {{ form.sell_currency_amount }}
+                </div>
+                <input type="submit" value="Submit" class="btn btn-success form-control">
+            </div>
         </div>
-        <div class="mb-3">
-            <label class="form-label">{{ form.buy_currency_amount.label_tag }}</label>
-            {{ form.buy_currency_amount }}
-
-        </div>
-        <div class="mb-3">
-            <label class="form-label">{{ form.sell_currency.label_tag }}</label>
-            {{ form.sell_currency }}
-        </div>
-        <div class="mb-3">
-            <label class="form-label">{{ form.sell_currency_amount.label_tag }}</label>
-            {{ form.sell_currency_amount }}
-            <button id="tradeform_check_balance" class="btn btn-primary btn-sm check-balance">Check balance</button>
-        </div>
-        <input type="submit" value="Submit" class="btn btn-success btn-lg">
     </form>
 {% endblock %}
