@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
+from django.views.decorators.http import require_http_methods
 
 from .models import TransactionHistory, TickerData
 from .forms import RegularTradeForm, TickerForm, CreateUserForm
@@ -109,23 +110,24 @@ def settings(request):
 
 ############ BACKEND URL ############
 
-# backend-validation
 @login_required(login_url='login')
-def update_ticker_data(request):
-    currency = request.POST['currency']
-
-    if TickerData.objects.filter(currency=currency).exists():
-        messages.success(request, ('Current currency already in list'))
+@require_http_methods(['POST'])
+def add_ticker(request):
+    form = TickerForm(request.POST)
+    if form.is_valid():
+        ticker = TickerData(**form.cleaned_data)
+        ticker.save()
     else:
-        ticker_currency = TickerData(currency=currency)
-        ticker_currency.save()
-    
+        messages.error(request, form.errors)
+
     return redirect('settings')
 
 @login_required(login_url='login')
-def delete_ticker_data(request, pk):
-    ticker_currency = get_object_or_404(TickerData, pk=pk)
-    ticker_currency.delete()
+@require_http_methods(['POST'])
+def delete_ticker(request):
+    for pk in request.POST.getlist('ticker_check'):
+        ticker = get_object_or_404(TickerData, pk=pk)
+        ticker.delete()
 
     return redirect('settings')
 

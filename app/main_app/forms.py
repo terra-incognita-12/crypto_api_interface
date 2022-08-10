@@ -1,7 +1,8 @@
-from curses.ascii import US
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+
+from .models import TickerData
 
 class CreateUserForm(UserCreationForm):
     class Meta:
@@ -44,8 +45,14 @@ class RegularTradeForm(forms.Form):
         })
     )
 
-class TickerForm(forms.Form):
-    currency = forms.CharField(
-        max_length=50,
-        widget=forms.TextInput(attrs={'class': 'form-control currency-autocomplete'})
-    )
+class TickerForm(forms.ModelForm):
+    class Meta:
+        model = TickerData
+        fields = '__all__'
+        widgets = {
+            'currency': forms.TextInput(attrs={'class': 'form-control currency-autocomplete'})
+        }
+
+    def clean(self):
+        print('UP TO INSTALL BACKEND VALIDATION')
+        return self.cleaned_data

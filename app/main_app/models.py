@@ -8,4 +8,4 @@ class TransactionHistory(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
 class TickerData(models.Model):
-    currency = models.CharField(max_length=50)
+    currency = models.CharField(max_length=50, unique=True)

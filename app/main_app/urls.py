@@ -20,6 +20,6 @@ urlpatterns = [
     path('regular_trade/', trade_regular_trade, name='trade_regular_trade'),
     
     path('settings/', settings, name='settings'),
-    path('settings/update_ticker_data/', update_ticker_data, name='update_ticker_data'),
-    path('settings/delete_ticker_data/<str:pk>', delete_ticker_data, name='delete_ticker_data'),
+    path('settings/ticker/add', add_ticker, name='add_ticker'),
+    path('settings/ticker/delete', delete_ticker, name='delete_ticker'),
 ]
