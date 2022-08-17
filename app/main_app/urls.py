@@ -15,7 +15,8 @@ urlpatterns = [
     path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(template_name='auth/reset_password_complete.html'), name='password_reset_complete'),
 
     path('transaction_history/', transaction_history, name='transaction_history'),
-    path('transaction_history/delete/<str:pk>', delete_transaction_history, name='delete_transaction_history'),
+    # path('transaction_history/delete/<str:pk>', delete_transaction_history, name='delete_transaction_history'),
+    path('transaction_history/delete', delete_transaction_history, name='delete_transaction_history'),
 
     path('regular_trade/', trade_regular_trade, name='trade_regular_trade'),
     

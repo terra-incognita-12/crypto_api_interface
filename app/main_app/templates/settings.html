@@ -9,7 +9,7 @@
     <h4>Add new currency</h4>
     <form method="post" action="{% url 'add_ticker' %}">
         {% csrf_token %}
-        <div class="row">
+        <div class="mb-3 row">
             <div class="col-3">
                 <div class="input-group">
                     {{ ticker_form.currency }}
@@ -24,7 +24,7 @@
 
         <form method="post" action="{% url 'delete_ticker' %}">
             {% csrf_token %}
-            <div class="row row-cols-6">
+            <div class="mb-4 row row-cols-6">
                 {% for elem in ticker_currency_arr %}
                     <div class="col-1">
                         <div class="form-check form-check-inline">
@@ -34,7 +34,7 @@
                     </div>
                 {% endfor %}
             </div>
-            <button class="btn btn-danger" type="submit">Delete</button>
+            <button class="btn btn-danger" type="submit" onclick="return confirm_delete()">Delete</button>
         </form>
     {% endif %}
     <hr>

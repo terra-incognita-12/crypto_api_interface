@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.views.decorators.http import require_http_methods
 
 from .models import TransactionHistory, TickerData
-from .forms import RegularTradeForm, TickerForm, CreateUserForm
+from .forms import TradeForm, TickerForm, CreateUserForm
 from .filters import TransactionHistoryFilter
 from .decorators import unauthenticated_user
 
@@ -71,21 +71,11 @@ def transaction_history(request):
 
 @login_required(login_url='login')
 def trade_regular_trade(request):
-    form = RegularTradeForm()
+    form = TradeForm()
     if request.method == 'POST':
-        form = RegularTradeForm(request.POST)
+        form = TradeForm(request.POST)
         if form.is_valid():
-            buy_currency = request.POST['buy_currency']
-            buy_currency_amount = request.POST['buy_currency_amount']
-            sell_currency = request.POST['sell_currency']
-            sell_currency_amount = request.POST['sell_currency_amount']
-
-            complete_order = TransactionHistory(
-                buy_currency = buy_currency,
-                buy_currency_amount = buy_currency_amount,
-                sell_currency = sell_currency,
-                sell_currency_amount = sell_currency_amount
-            )
+            complete_order = TransactionHistory(**form.cleaned_data)
             complete_order.save()
             messages.success(request, ('Transaction completed successfully'))
             
@@ -132,8 +122,10 @@ def delete_ticker(request):
     return redirect('settings')
 
 @login_required(login_url='login')
-def delete_transaction_history(request, pk):
-    transation = get_object_or_404(TransactionHistory, pk=pk)
-    transation.delete()
+@require_http_methods(['POST'])
+def delete_transaction_history(request):
+    for pk in request.POST.getlist('transaction_check'):
+        transation = get_object_or_404(TransactionHistory, pk=pk)
+        transation.delete()
 
     return redirect('transaction_history')

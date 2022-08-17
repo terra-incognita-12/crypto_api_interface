@@ -8,47 +8,39 @@
     <br>
     <form method="get">
         {% csrf_token %}
-        <div class="row">
+        <div class="mb-3 row">
             <div class="col-6">
-                <div class="mb-3">
-                    <h4><label class="form-label">{{ historyFilter.form.all_currencies.label_tag }}</label></h4>
-                    {{ historyFilter.form.all_currencies }}
-                </div>
+                <h4><label class="form-label">{{ historyFilter.form.all_currencies.label_tag }}</label></h4>
+                {{ historyFilter.form.all_currencies }}
             </div>
         </div>
-        <div class="row">
+        <div class="mb-3 row">
             <div class="col-3">
-                <div class="mb-3">
-                    <h4><label class="form-label">{{ historyFilter.form.buy_currency.label_tag }}</label></h4>
-                    {{ historyFilter.form.buy_currency }}
-                </div>
-                <div class="mb-3">
+                <h4><label class="form-label">{{ historyFilter.form.buy_currency.label_tag }}</label></h4>
+                {{ historyFilter.form.buy_currency }}
+            
+                <div class="mt-2 row">
                     <label class="form-label">{{ historyFilter.form.buy_currency_amount_from.label_tag }}</label>
-                    <div class="row">
-                        <div class="col-6">
-                            {{ historyFilter.form.buy_currency_amount_from }}
-                        </div>
-                        <div class="col-6">
-                            {{ historyFilter.form.buy_currency_amount_to }}
-                        </div> 
+                    <div class="col-6">
+                        {{ historyFilter.form.buy_currency_amount_from }}
                     </div>
+                    <div class="col-6">
+                        {{ historyFilter.form.buy_currency_amount_to }}
+                    </div> 
                 </div>
             </div>
             <div class="col-3">
-                <div class="mb-3">
-                    <h4><label class="form-label">{{ historyFilter.form.sell_currency.label_tag }}</label></h4>
-                    {{ historyFilter.form.sell_currency }}
-                </div>
-                <div class="mb-3">
+                <h4><label class="form-label">{{ historyFilter.form.sell_currency.label_tag }}</label></h4>
+                {{ historyFilter.form.sell_currency }}
+
+                <div class="mt-2 row">
                     <label class="form-label">{{ historyFilter.form.sell_currency_amount_from.label_tag }}</label>
-                    <div class="row">
-                        <div class="col-6">
-                            {{ historyFilter.form.sell_currency_amount_from }}
-                        </div>
-                        <div class="col-6">
-                            {{ historyFilter.form.sell_currency_amount_to }}
-                        </div> 
+                    <div class="col-6">
+                        {{ historyFilter.form.sell_currency_amount_from }}
                     </div>
+                    <div class="col-6">
+                        {{ historyFilter.form.sell_currency_amount_to }}
+                    </div> 
                 </div>
             </div>
         </div>
@@ -70,30 +62,33 @@
     <hr>
     <h2>Transactions</h2>
     <br>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Buy</th>
-                <th scope="col">Buy Amount</th>
-                <th scope="col">Sell</th>
-                <th scope="col">Sell Amount</th>
-                <th scope="col">Date</th>
-                <th scope="col">Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for elem in history %}
+    <form method="post" action="{% url 'delete_transaction_history' %}">
+        {% csrf_token %}
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <th scope="row">{{ elem.id }}</th>
-                    <td>{{ elem.buy_currency }}</td>
-                    <td>{{ elem.buy_currency_amount }}</td>
-                    <td>{{ elem.sell_currency }}</td>
-                    <td>{{ elem.sell_currency_amount }}</td>
-                    <td>{{ elem.date }}</td>
-                    <td><a href="{% url 'delete_transaction_history' elem.id %}" class="btn btn-danger btn-sm confirm-delete">Delete</a></td>
+                    <th scope="col">ID</th>
+                    <th scope="col">Buy</th>
+                    <th scope="col">Buy Amount</th>
+                    <th scope="col">Sell</th>
+                    <th scope="col">Sell Amount</th>
+                    <th scope="col">Date</th>
+                    <th scope="col"><button class="btn btn-sm btn-danger" type="submit" onclick="return confirm_delete()">Delete</button></th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for elem in history %}
+                    <tr>
+                        <th scope="row">{{ elem.id }}</th>
+                        <td>{{ elem.buy_currency }}</td>
+                        <td>{{ elem.buy_currency_amount }}</td>
+                        <td>{{ elem.sell_currency }}</td>
+                        <td>{{ elem.sell_currency_amount }}</td>
+                        <td>{{ elem.date }}</td>
+                        <td><input class="form-check-input" type="checkbox" value="{{ elem.id }}" name="transaction_check"></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
 {% endblock %}

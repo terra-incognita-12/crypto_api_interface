@@ -1,6 +1,10 @@
-$(document).on('click', '.confirm-delete', function(){
+// $(document).on('click', '.confirm-delete', function(){
+//     return confirm('Are you sure you want delete this?');
+// });
+
+function confirm_delete() {
     return confirm('Are you sure you want delete this?');
-});
+}
 
 // Get all single currencies
 function getCurrencies() {
@@ -50,7 +54,6 @@ $(function(){
                     const response = await fetch(`https://api.coinbase.com/v2/exchange-rates?currency=${buy_currency}`, options);
                     const json = await response.json();
                     const rate = json['data']['rates'][`${sell_currency}`];
-                    console.log(rate);
                     const total_value = parseFloat(rate) * parseFloat(buy_amount);
                     $('#tradeform_sell_amount').attr('value', total_value);  
                 } catch (error) {
