@@ -28,8 +28,6 @@ class TradeForm(forms.ModelForm):
             }),
             'sell_currency_amount': forms.NumberInput(attrs={
                 'class': 'form-control',
-                'id': 'tradeform_sell_amount',
-                'placeholder': 'Fill the other forms to calculate possible sell amount'
             })
 
         }

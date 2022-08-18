@@ -55,7 +55,7 @@ $(function(){
                     const json = await response.json();
                     const rate = json['data']['rates'][`${sell_currency}`];
                     const total_value = parseFloat(rate) * parseFloat(buy_amount);
-                    $('#tradeform_sell_amount').attr('value', total_value);  
+                    $('#tradeform_sell_amount').text(`${total_value} (${sell_currency})`);
                 } catch (error) {
                     console.error(error);
                 }
